@@ -1,15 +1,17 @@
 package com.udacity.gradle.builditbigger.backend;
 
+import com.vuki.data.models.Joke;
+
 /** The object model for the data we are sending through endpoints */
 public class MyBean {
 
-    private String myData;
+    private Joke myData;
 
-    public String getData() {
+    public Joke getData() {
         return myData;
     }
 
-    public void setData(String data) {
+    public void setData(Joke data) {
         myData = data;
     }
 }
