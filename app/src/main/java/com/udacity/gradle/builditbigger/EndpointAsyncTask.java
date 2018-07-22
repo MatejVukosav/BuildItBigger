@@ -16,13 +16,13 @@ import java.io.IOException;
 /**
  * Created by mvukosav
  */
-public class EndpointAsyncTask extends AsyncTask<Void, Void, Joke> {
+public class EndpointAsyncTask extends AsyncTask<ProgressBar, Void, Joke> {
     private static MyApi myApiService = null;
     private ProgressBar progressBar;
-
-    public EndpointAsyncTask( ProgressBar progressBar ) {
-        this.progressBar = progressBar;
-    }
+//
+//    public EndpointAsyncTask( ProgressBar progressBar ) {
+//        this.progressBar = progressBar;
+//    }
 
     @Override
     protected void onPreExecute() {
@@ -30,7 +30,7 @@ public class EndpointAsyncTask extends AsyncTask<Void, Void, Joke> {
     }
 
     @Override
-    protected Joke doInBackground( Void... params ) {
+    protected Joke doInBackground( ProgressBar... params ) {
         if ( myApiService == null ) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder( AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null )
@@ -45,7 +45,10 @@ public class EndpointAsyncTask extends AsyncTask<Void, Void, Joke> {
             myApiService = builder.build();
         }
 
-        progressBar.setVisibility( View.VISIBLE );
+        progressBar = params[0];
+        if ( progressBar != null ) {
+            progressBar.setVisibility( View.VISIBLE );
+        }
 
         try {
             return new Joke( myApiService.joke().execute().getJoke().getText() );

@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke( View view ) {
         progressBar.setVisibility( View.VISIBLE );
-        EndpointAsyncTask endpointsAsyncTask = new EndpointAsyncTask( progressBar );
+        EndpointAsyncTask endpointsAsyncTask = new EndpointAsyncTask();
         try {
-            Joke joke = endpointsAsyncTask.execute().get();
+            Joke joke = endpointsAsyncTask.execute( progressBar ).get();
             Intent intent = new Intent( this, JokesActivity.class );
             intent.putExtra( JokesActivity.EXTRA_JOKE, joke.getText() );
             startActivity( intent );

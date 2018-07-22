@@ -2,6 +2,7 @@ package com.udacity.gradle.builditbigger;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.ProgressBar;
 
 import com.vuki.data.models.Joke;
 
@@ -26,7 +27,7 @@ public class AsyncTaskUnitTest {
     public void asyncTaskShouldReturnJoke() throws ExecutionException, InterruptedException {
         EndpointAsyncTask asyncTask = new EndpointAsyncTask();
 
-        Joke joke = asyncTask.execute().get();
+        Joke joke = asyncTask.execute(new ProgressBar( rule.getActivity() )).get();
 
         Assert.assertNotNull( joke );
         Assert.assertNotNull( joke.getText() );
