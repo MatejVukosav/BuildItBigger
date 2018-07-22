@@ -17,3 +17,25 @@ allprojects {
         jcenter()
     }
 }
+
+
+//task stopEngine() {
+//    dependsOn ':backend:appengineStop'
+//    doLast {
+//        println "Server stop"
+//    }
+//}
+//task startEngine() {
+//    dependsOn ':backend:appengineStart'
+//    doLast {
+//        println "Server start"
+//    }
+//}
+//task runAllTests() {
+//    dependsOn ':app:test'
+//}
+//
+//task checkProjectWork() {
+//    //dependsOn startEngine
+//    finalizedBy runAllTests //, stopEngine
+//}

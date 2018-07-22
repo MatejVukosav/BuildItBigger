@@ -1,6 +1,8 @@
 package com.udacity.gradle.builditbigger;
 
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -14,8 +16,18 @@ import java.io.IOException;
 /**
  * Created by mvukosav
  */
-class EndpointsAsyncTask extends AsyncTask<Void, Void, Joke> {
+public class EndpointAsyncTask extends AsyncTask<Void, Void, Joke> {
     private static MyApi myApiService = null;
+    private ProgressBar progressBar;
+
+    public EndpointAsyncTask( ProgressBar progressBar ) {
+        this.progressBar = progressBar;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
 
     @Override
     protected Joke doInBackground( Void... params ) {
@@ -32,6 +44,9 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, Joke> {
                     } );
             myApiService = builder.build();
         }
+
+        progressBar.setVisibility( View.VISIBLE );
+
         try {
             return new Joke( myApiService.joke().execute().getJoke().getText() );
         } catch ( IOException e ) {
@@ -40,4 +55,11 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, Joke> {
         }
     }
 
+    @Override
+    protected void onPostExecute( Joke joke ) {
+        super.onPostExecute( joke );
+        if ( progressBar != null ) {
+            progressBar.setVisibility( View.GONE );
+        }
+    }
 }

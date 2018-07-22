@@ -44,6 +44,25 @@ android {
         }
     }
 
+
+
+    sourceSets {
+        main { java.srcDirs = ['src/main/java', 'src/androidTest/java/com.udacity.gradle.builditbigger'] }
+
+        free {
+            java.srcDirs = ['src/free/java', 'src/free/java/']
+            resources.srcDirs = ['src/free/resources', 'src/free/res']
+            manifest.srcFile
+            'src/free/AndroidManifest.xml'
+        }
+        paid {
+            java.srcDirs = ['src/paid/java', 'src/paid/java/']
+            resources.srcDirs = ['src/paid/resources', 'src/paid/res']
+            manifest.srcFile
+            'src/paid/AndroidManifest.xml'
+        }
+    }
+
     dataBinding {
         enabled = true
     }
@@ -53,6 +72,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':data')
     implementation project(':jokes')
+    endpointsServer project(path: ':backend', configuration: 'endpoints')
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
@@ -60,7 +80,6 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-    endpointsServer project(path: ':backend', configuration: 'endpoints')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation 'com.google.api-client:google-api-client:1.23.0'
@@ -72,3 +91,6 @@ dependencies {
     })
 
 }
+
+
+

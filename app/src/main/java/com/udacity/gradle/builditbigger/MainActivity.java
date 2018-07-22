@@ -1,11 +1,14 @@
 package com.udacity.gradle.builditbigger;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.vuki.data.models.Joke;
 import com.vuki.jokes.JokesActivity;
@@ -14,10 +17,15 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
+    ViewDataBinding binding;
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_main );
+        binding = DataBindingUtil.setContentView( this, R.layout.activity_main );
+
+        progressBar = findViewById( R.id.progress_bar );
     }
 
     @Override
@@ -42,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke( View view ) {
-
-        EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask();
+        progressBar.setVisibility( View.VISIBLE );
+        EndpointAsyncTask endpointsAsyncTask = new EndpointAsyncTask( progressBar );
         try {
             Joke joke = endpointsAsyncTask.execute().get();
             Intent intent = new Intent( this, JokesActivity.class );
