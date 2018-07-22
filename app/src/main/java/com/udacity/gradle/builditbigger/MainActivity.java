@@ -1,14 +1,16 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.vuki.data.models.Joke;
+import com.vuki.jokes.JokesActivity;
+
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,8 +43,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke( View view ) {
 
-        new EndpointsAsyncTask().execute( new Pair<Context, Joke>( this, new Joke( "he he he" ) ) );
-//        Toast.makeText( this, joke.getText(), Toast.LENGTH_SHORT ).show();
+        EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask();
+        try {
+            Joke joke = endpointsAsyncTask.execute().get();
+            Intent intent = new Intent( this, JokesActivity.class );
+            intent.putExtra( JokesActivity.EXTRA_JOKE, joke.getText() );
+            startActivity( intent );
+        } catch ( InterruptedException | ExecutionException e ) {
+            e.printStackTrace();
+        }
     }
 
 }

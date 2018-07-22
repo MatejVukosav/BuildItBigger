@@ -12,6 +12,9 @@ import android.app.Application;
  */
 public class App extends Application {
 
+    // - 10.0.2.2 is localhost's IP address in Android emulator
+    public static String SERVER_URL_ADDRESS = "10.0.2.2:8080";
+
     @Override
     public void onCreate() {
         super.onCreate();

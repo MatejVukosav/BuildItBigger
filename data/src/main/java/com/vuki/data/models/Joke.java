@@ -1,9 +1,11 @@
 package com.vuki.data.models;
 
+import java.io.Serializable;
+
 /**
  * Created by mvukosav
  */
-public class Joke {
+public class Joke implements Serializable {
 
     private String text;
 

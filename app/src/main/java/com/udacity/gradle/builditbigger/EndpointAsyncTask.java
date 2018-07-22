@@ -1,9 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Pair;
-import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -17,43 +14,30 @@ import java.io.IOException;
 /**
  * Created by mvukosav
  */
-class EndpointsAsyncTask extends AsyncTask<Pair<Context, Joke>, Void, Joke> {
+class EndpointsAsyncTask extends AsyncTask<Void, Void, Joke> {
     private static MyApi myApiService = null;
-    private Context context;
 
     @Override
-    protected Joke doInBackground( Pair<Context, Joke>... params ) {
+    protected Joke doInBackground( Void... params ) {
         if ( myApiService == null ) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder( AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null )
-                    // options for running against local devappserver
-                    // - 10.0.2.2 is localhost's IP address in Android emulator
                     // - turn off compression when running against local devappserver
-                    .setRootUrl( "http://localhost:8080/_ah/joke/" )
+                    .setRootUrl( "http://" + App.SERVER_URL_ADDRESS + "/_ah/api/" )
                     .setGoogleClientRequestInitializer( new GoogleClientRequestInitializer() {
                         @Override
-                        public void initialize( AbstractGoogleClientRequest<?> abstractGoogleClientRequest ) throws IOException {
+                        public void initialize( AbstractGoogleClientRequest<?> abstractGoogleClientRequest ) {
                             abstractGoogleClientRequest.setDisableGZipContent( true );
                         }
                     } );
-            // end options for devappserver
-
             myApiService = builder.build();
         }
-
-        context = params[0].first;
-        Joke joke = params[0].second;
-
         try {
-            return new Joke( myApiService.joke().execute().getData().getText() );
+            return new Joke( myApiService.joke().execute().getJoke().getText() );
         } catch ( IOException e ) {
-//            return e.getMessage();
+            e.printStackTrace();
             return null;
         }
     }
 
-    @Override
-    protected void onPostExecute( Joke result ) {
-        Toast.makeText( context, result.getText(), Toast.LENGTH_LONG ).show();
-    }
 }
